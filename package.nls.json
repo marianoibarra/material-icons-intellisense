@@ -3,5 +3,7 @@
   "config.preview.backgroundColor.description": "Background color of the preview icon. Supports any valid CSS color value.",
   "config.preview.foregroundColor.description": "Foreground color of the preview icon. Supports any valid CSS color value.",
   "config.version.description": "Material Icons major version to use. More information at [Material Icons](https://github.com/google/material-design-icons?tab=readme-ov-file#material-symbols).",
-  "config.preview.color.patternErrorMessage": "Invalid color format. Use a valid CSS color value."
+  "config.preview.color.patternErrorMessage": "Invalid color format. Use a valid CSS color value.",
+  "config.matches.matchClasses.description": "Match any of the listed classes.",
+  "config.matches.matchTags.description": "Match any of the listed tags."
 }

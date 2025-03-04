@@ -64,6 +64,35 @@
             "type": "boolean",
             "default": "true",
             "markdownDescription": "%config.preview.iconFill.description%"
+          },
+          "material-icons-intellisense.matches.matchClasses": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "material-symbols-outlined",
+              "material-symbols-rounded",
+              "material-symbols-sharp",
+              "material-icons",
+              "material-icons-outlined",
+              "material-icons-round",
+              "material-icons-sharp",
+              "material-icons-two-tone"
+            ],
+            "markdownDescription": "%config.matches.matchClasses.description%"
+          },
+          "material-icons-intellisense.matches.matchTags": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "span"
+            ],
+            "markdownDescription": "%config.matches.matchTags.description%"
           }
         }
       }
@@ -78,14 +107,18 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.91.0",
     "@types/mocha": "^10.0.7",
     "@types/node": "20.x",
+    "@types/regexp.escape": "^2.0.0",
+    "@types/vscode": "^1.91.0",
     "@typescript-eslint/eslint-plugin": "^7.14.1",
     "@typescript-eslint/parser": "^7.11.0",
-    "eslint": "^8.57.0",
-    "typescript": "^5.4.5",
     "@vscode/test-cli": "^0.0.9",
-    "@vscode/test-electron": "^2.4.0"
+    "@vscode/test-electron": "^2.4.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "regexp.escape": "^2.0.1"
   }
 }

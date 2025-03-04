@@ -1,22 +1,18 @@
+import escape from "regexp.escape";
 import { Position, Range, TextDocument } from "vscode";
+import { Matches } from "./types";
 
-export function match(document: TextDocument, position: Position): boolean {
+export function match(document: TextDocument, position: Position, matches: Matches): boolean {
   // Regexps to match the opening tag of a mat-icon element
   const openingTagMatIconRegex = /<mat-icon(\s+[^>]*)?\n?\s*>$/;
   const closingTagMatIconRegex = /^<\/(mat-icon)\n?\s*>/;
 
-  /** Regexps to match the opening and closing tags of a span element with the next classes:
-   * - material-symbols-outlined
-   * - material-symbols-rounded
-   * - material-symbols-sharp
-   * - material-icons
-   * - material-icons-outlined
-   * - material-icons-round
-   * - material-icons-sharp
-   * - material-icons-two-tone */
-  const openingTagSpanRegex =
-    /<span\s+[^>]*class\s*=\s*["'][^"']*(?<![\w-])(material-icons(-outlined|-round|-sharp|-two-tone)?|material-symbols-(outlined|rounded|sharp))(?![\w-])[^"']*["'][^>]*>/;
-  const closingTagSpanRegex = /^<\/(span)\n?\s*>/;
+  // Regexps to match the opening and closing tags of user-specified elements with user-specified classes
+  const tagsMatch = matches.matchTags.reduce((match, htmlTag) => match + "|" + escape(htmlTag));
+  const classesMatch = matches.matchClasses.reduce((match, htmlClass) => match + "|" + escape(htmlClass));
+  const openingTagRegex =
+    new RegExp(`<${tagsMatch}\\s+[^>]*class\\s*=\\s*["'][^"']*(?<![\\w-])(${classesMatch})(?![\\w-])[^"']*["'][^>]*>`);
+  const closingTagRegex = new RegExp(`^<\\/(${tagsMatch})\\n?\\s*>`);
 
   // Get the previous and next lines
   const previousLine = position.line > 0 ? document.lineAt(position.line - 1).text : "";
@@ -32,11 +28,11 @@ export function match(document: TextDocument, position: Position): boolean {
   const nextContent = (currentLineEnd + nextLine).trim();
 
   // Check if the current line is a mat-icon element
-  const openingTagMatch = previousContent.match(openingTagMatIconRegex);
-  const closingTagMatch = nextContent.match(closingTagMatIconRegex);
-  // Check if the current line is a span element with the class `material-symbols-outlined`
-  const openingTagSpanMatch = previousContent.match(openingTagSpanRegex);
-  const closingTagSpanMatch = nextContent.match(closingTagSpanRegex);
+  const openingTagMatIconMatch = previousContent.match(openingTagMatIconRegex);
+  const closingTagMatIconMatch = nextContent.match(closingTagMatIconRegex);
+  // Check if the current line matches user configuration
+  const openingTagMatch = previousContent.match(openingTagRegex);
+  const closingTagMatch = nextContent.match(closingTagRegex);
 
-  return Boolean((openingTagMatch && closingTagMatch) || (openingTagSpanMatch && closingTagSpanMatch));
+  return Boolean((openingTagMatIconMatch && closingTagMatIconMatch) || (openingTagMatch && closingTagMatch));
 }

@@ -21,6 +21,11 @@ export enum MaterialIconsVersion {
   V4 = "4",
 }
 
+export interface Matches {
+  matchClasses: string[];
+  matchTags: string[];
+}
+
 const SVG_VIEWBOX: Record<MaterialIconsVersion, string> = {
   [MaterialIconsVersion.V3]: "-2 -2 28 28",
   [MaterialIconsVersion.V4]: "0 -960 960 960",

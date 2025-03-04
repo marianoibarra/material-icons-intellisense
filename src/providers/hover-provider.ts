@@ -1,11 +1,13 @@
 import { Hover, HoverProvider as IHoverProvider, Position, ProviderResult, Range, TextDocument } from "vscode";
 import { match } from "../utils/match";
-import { Icon } from "../utils/types";
+import { Icon, Matches } from "../utils/types";
 
 export class HoverProvider implements IHoverProvider {
   private readonly hoverItems: Map<string, Hover>;
+  private readonly matchOptions: Matches;
 
-  constructor(icons: Icon[]) {
+  constructor(icons: Icon[], matchOptions: Matches) {
+    this.matchOptions = matchOptions;
     this.hoverItems = new Map(icons.map(icon => [icon.name, icon.hoverItem]));
   }
 
@@ -15,7 +17,7 @@ export class HoverProvider implements IHoverProvider {
       return;
     }
 
-    if (!match(document, wordRange.end)) {
+    if (!match(document, wordRange.end, this.matchOptions)) {
       return;
     }
 

@@ -30,8 +30,8 @@ function registerProviders(context: vscode.ExtensionContext) {
   const data = require(path.join(path.dirname(__dirname), `data/material-v${config.version}`, "icons.json")) as Record<string, IconRaw>;
   const icons = Object.entries(data).map(([name, entry]) => new Icon(name, entry, config));
 
-  const provideCompletionItems = new CompletionProvider(icons);
-  const provideHoverItems = new HoverProvider(icons);
+  const provideCompletionItems = new CompletionProvider(icons, config.matches);
+  const provideHoverItems = new HoverProvider(icons, config.matches);
 
   disposables.push(
     vscode.languages.registerCompletionItemProvider(selector, provideCompletionItems),
